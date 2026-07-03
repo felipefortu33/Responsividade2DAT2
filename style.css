@@ -1,3 +1,271 @@
-/* O HTML já está pronto (index.html). Este CSS começa vazio de
-   propósito: vamos construí-lo juntos durante a aula, seguindo
-   roteiro-aula.md (pasta professor/), do PASSO 1 ao PASSO 6. */
+/* ==========================================================================
+   AULA: Design Responsivo e Adaptação de Layouts — CSS do professor
+   Abordagem: MOBILE-FIRST
+   Isso significa: escrevemos primeiro o estilo para telas pequenas
+   (sem media query nenhuma) e depois usamos "min-width" para ir
+   ACRESCENTANDO regras conforme a tela cresce. É o padrão mais usado
+   no mercado hoje.
+
+   Breakpoints usados nesta aula:
+   - Mobile:  até 599px   (estilo base, sem media query)
+   - Tablet:  a partir de 600px
+   - Desktop: a partir de 900px
+   ========================================================================== */
+
+/* PASSO 1 (junto com o viewport no HTML) — Reset básico
+   box-sizing: border-box faz padding e border entrarem DENTRO da
+   largura declarada, evitando que elementos "estourem" o layout. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: #2b1d14;
+  line-height: 1.5;
+}
+
+img {
+  /* Regra de ouro da imagem responsiva: nunca deixa a imagem passar
+     da largura do elemento pai, e mantém a proporção. */
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   PASSO 2 — Cabeçalho (mobile-first)
+   Mobile: logo + botão hambúrguer numa linha; menu de navegação
+   escondido por padrão (display: none) e vira um "drawer" vertical
+   quando ganha a classe .is-open (ver script.js).
+   ========================================================================== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: #6b3e26;
+  color: #fff;
+}
+
+.header__logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.header__toggle {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: block; /* visível no mobile */
+}
+
+.header__nav {
+  display: none;              /* escondido até clicar no ☰ */
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.header__nav.is-open {
+  display: flex;               /* JS adiciona/remove esta classe */
+}
+
+.header__nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* A partir do TABLET (600px+): menu hambúrguer some, navegação
+   volta a ficar sempre visível e em linha. */
+@media (min-width: 600px) {
+  .header__toggle {
+    display: none;
+  }
+
+  .header__nav {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    margin-top: 0;
+    gap: 1.5rem;
+  }
+
+  .header__nav a {
+    padding: 0;
+    border-top: none;
+  }
+}
+
+/* ==========================================================================
+   PASSO 3 — Hero / tipografia fluida
+   clamp(mínimo, valor-ideal-em-vw, máximo): a fonte cresce junto com
+   a tela, mas nunca fica menor que o mínimo nem maior que o máximo.
+   Vantagem sobre media query: não tem "saltos" bruscos de tamanho.
+   ========================================================================== */
+.hero {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: #f4e3d3;
+}
+
+.hero h1 {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  margin-bottom: 0.75rem;
+}
+
+.hero p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #5a4636;
+}
+
+/* ==========================================================================
+   PASSO 4 — Grid de produtos
+   repeat(auto-fit, minmax(220px, 1fr)):
+   - cada coluna tem no mínimo 220px e no máximo 1 fração do espaço
+   - o navegador calcula sozinho QUANTAS colunas cabem na largura atual
+   Resultado: responsivo sem UMA ÚNICA media query nesta seção.
+   ========================================================================== */
+.products {
+  padding: 3rem 1.5rem;
+}
+
+.products h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.products__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e6d7c8;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.card h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.card p {
+  padding: 0 1rem 1rem;
+  color: #5a4636;
+  font-size: 0.95rem;
+}
+
+.card__img {
+  height: 160px;
+  background: linear-gradient(135deg, #d9a066, #b97a3c);
+}
+
+.card__img--2 { background: linear-gradient(135deg, #7b4b2a, #4a2c17); }
+.card__img--3 { background: linear-gradient(135deg, #e8c39e, #c98a4b); }
+.card__img--4 { background: linear-gradient(135deg, #6b4226, #3a2313); }
+
+/* ==========================================================================
+   PASSO 5 — Seção "Sobre" (Flexbox mobile-first)
+   Mobile: coluna única (padrão do flexbox é "row", então definimos
+   column explicitamente). Tablet+: vira linha, lado a lado.
+   ========================================================================== */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 3rem 1.5rem;
+  background: #f4e3d3;
+}
+
+.about__text h2 {
+  margin-bottom: 0.75rem;
+}
+
+.about__highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #6b3e26;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.about__highlight strong {
+  font-size: 1.75rem;
+}
+
+@media (min-width: 600px) {
+  .about {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .about__text {
+    flex: 2;                 /* ocupa 2 partes do espaço */
+  }
+
+  .about__highlight {
+    flex: 1;                 /* ocupa 1 parte do espaço */
+  }
+}
+
+/* ==========================================================================
+   PASSO 6 — Faixa de demonstração dos breakpoints
+   Muda de cor e de texto (via CSS puro, com "content") só para deixar
+   visualmente claro qual media query está ativa no momento.
+   ========================================================================== */
+.breakpoint-demo {
+  padding: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  background: #a8483a; /* vermelho = MOBILE (até 599px) */
+}
+
+@media (min-width: 600px) {
+  .breakpoint-demo {
+    background: #c98a2c; /* laranja = TABLET (600px a 899px) */
+  }
+}
+
+@media (min-width: 900px) {
+  .breakpoint-demo {
+    background: #3f7d4f; /* verde = DESKTOP (900px+) */
+  }
+}
+
+.footer {
+  padding: 1.5rem;
+  text-align: center;
+  background: #2b1d14;
+  color: #cbb9a8;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   Ajuste geral de container para telas grandes: evita que o conteúdo
+   fique esticado demais em monitores muito largos.
+   ========================================================================== */
+@media (min-width: 900px) {
+  .hero,
+  .products,
+  .about {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

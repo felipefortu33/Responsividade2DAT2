@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ponto Doce — Padaria</title>
-  <link rel="stylesheet" href="style.css">
+<!-- ==========================================================================
+     AULA: Design Responsivo e Adaptação de Layouts
+     Disciplina: Programação Front-end I
+     Duração prevista: 1 hora (tempos sugeridos em cada PASSO)
+     Projeto de exemplo: site de uma padaria fictícia ("Ponto Doce")
+
+     COMO USAR ESTE ARQUIVO
+     Este é o código FINAL, completo e comentado. A ideia é que você
+     digite ao vivo, seção por seção, seguindo os marcadores PASSO 1,
+     PASSO 2, etc. Os alunos copiam da projeção enquanto você explica.
+     A pasta "aluno" tem o mesmo resultado final, sem os comentários
+     de roteiro, para quem quiser conferir/comparar depois.
+     ========================================================================== -->
+<meta charset="UTF-8">
+
+<!-- PASSO 1 — Viewport (2 min)
+     Sem esta linha, navegadores mobile fingem ter 980px de largura e
+     encolhem a página inteira (efeito "zoom out"). É a base de TODO
+     design responsivo — sempre a primeira coisa a explicar.
+     - width=device-width  → usa a largura real do aparelho
+     - initial-scale=1.0   → começa com zoom 100% -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ponto Doce — Padaria</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- PASSO 2 — Cabeçalho responsivo (8 min)
+       Estrutura: logo + botão "hambúrguer" + navegação.
+       No desktop o menu fica em linha (Flexbox). No celular ele some
+       e só aparece quando o botão ☰ é clicado (ver PASSO 7 / JS). -->
   <header class="header">
     <div class="header__logo">Ponto Doce 🥐</div>
 
+    <!-- Este botão só é visível em telas pequenas (regra no CSS) -->
     <button class="header__toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
       ☰
     </button>
@@ -22,15 +48,27 @@
     </nav>
   </header>
 
+  <!-- PASSO 3 — Hero com tipografia fluida (5 min)
+       O título usa clamp() no CSS: o tamanho da fonte "flui" entre um
+       mínimo e um máximo conforme a largura da tela, sem precisar de
+       media query para isso. -->
   <section class="hero">
     <h1>Pão quentinho todo dia</h1>
     <p>Do forno para a sua mesa, em qualquer tamanho de tela.</p>
   </section>
 
+  <!-- PASSO 4 — Grade de produtos com CSS Grid (10 min)
+       Ponto-chave da aula: grid-template-columns com
+       repeat(auto-fit, minmax(220px, 1fr)) cria colunas que se
+       reorganizam sozinhas — layout responsivo SEM nenhuma media
+       query. Mostre redimensionando a janela do navegador. -->
   <section id="produtos" class="products">
     <h2>Nossos produtos</h2>
     <div class="products__grid">
 
+      <!-- Usamos blocos coloridos no lugar de <img> para não depender
+           de internet durante a aula. Em um projeto real, lembre os
+           alunos: imagem responsiva = max-width: 100%; height: auto; -->
       <article class="card">
         <div class="card__img card__img--1"></div>
         <h3>Pão Francês</h3>
@@ -55,6 +93,10 @@
     </div>
   </section>
 
+  <!-- PASSO 5 — Seção "Sobre" com Flexbox mobile-first (10 min)
+       No mobile, texto e caixa de destaque ficam empilhados
+       (flex-direction: column, que é o padrão). A partir do
+       breakpoint de tablet, viram duas colunas lado a lado. -->
   <section id="sobre" class="about">
     <div class="about__text">
       <h2>Nossa história</h2>
@@ -70,14 +112,23 @@
     </div>
   </section>
 
+  <!-- PASSO 6 — Recap de breakpoints (10 min)
+       Aproveite esta faixa simples para mostrar, ao vivo, as 3 faixas
+       de tela mudando de cor conforme a media query ativa (ver CSS,
+       seção "PASSO 6"). É uma forma visual de provar que as media
+       queries estão funcionando. -->
   <section class="breakpoint-demo">
     <p>Redimensione a janela: esta faixa muda de cor conforme o breakpoint ativo (mobile / tablet / desktop).</p>
   </section>
 
+  <!-- Rodapé simples -->
   <footer id="contato" class="footer">
     <p>&copy; 2026 Ponto Doce. Feito com carinho para a aula de Front-end.</p>
   </footer>
 
+  <!-- PASSO 7 — Menu hambúrguer (10 min)
+       O HTML e o CSS já preparam o visual; o JS só alterna uma
+       classe ("is-open") que o CSS usa para mostrar/esconder o menu. -->
   <script src="script.js"></script>
 </body>
 </html>
